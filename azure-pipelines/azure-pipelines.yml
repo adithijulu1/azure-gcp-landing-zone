@@ -13,7 +13,7 @@ stages:
         steps:
           - task: TerraformInstaller@1
             inputs:
-              terraformVersion: '1.6.0'
+              terraformVersion: '1.9.5'
           - script: |
               cd terraform/azure
               terraform init -backend=false
