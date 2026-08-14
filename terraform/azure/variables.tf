@@ -32,3 +32,9 @@ variable "tenant_id" {
   description = "Azure AD tenant ID"
   type        = string
 }
+
+variable "admin_group_object_ids" {
+  description = "List of Entra ID group object IDs granted AKS admin access"
+  type        = list(string)
+  default     = []
+}
