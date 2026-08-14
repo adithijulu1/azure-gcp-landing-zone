@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps { checkout scm }
+        }
+        stage('Terraform Validate') {
+            steps {
+                dir('terraform/azure') {
+                    sh 'terraform init -backend=false'
+                    sh 'terraform validate'
+                }
+            }
+        }
+        stage('Policy Compliance Check') {
+            steps {
+                sh 'az policy state trigger-scan --resource-group landing-zone-rg'
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                dir('terraform/azure') {
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+        stage('Deploy AKS Workloads') {
+            steps {
+                sh 'kubectl apply -f k8s/ --namespace production'
+            }
+        }
+    }
+
+    post {
+        always { echo 'Landing zone pipeline finished.' }
+        failure { echo 'Pipeline failed - review Terraform/Policy logs.' }
+    }
+}

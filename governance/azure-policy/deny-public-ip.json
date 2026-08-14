@@ -1,0 +1,17 @@
+{
+  "properties": {
+    "displayName": "Deny public IP creation on network interfaces",
+    "description": "This policy denies creation of public IP addresses to enforce the landing zone's private-only networking baseline.",
+    "mode": "All",
+    "policyRule": {
+      "if": {
+        "field": "type",
+        "equals": "Microsoft.Network/publicIPAddresses"
+      },
+      "then": {
+        "effect": "deny"
+      }
+    },
+    "parameters": {}
+  }
+}

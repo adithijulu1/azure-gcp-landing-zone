@@ -1,0 +1,19 @@
+// AKS Pod Failures - Last 24 Hours
+KubePodInventory
+| where TimeGenerated > ago(24h)
+| where PodStatus == "Failed"
+| summarize FailureCount = count() by Namespace, Name
+| order by FailureCount desc
+
+// Key Vault Access Denied Events
+AzureDiagnostics
+| where ResourceType == "VAULTS"
+| where ResultType == "Forbidden"
+| project TimeGenerated, CallerIPAddress, OperationName, ResultType
+
+// AKS Node CPU Utilization Trend
+Perf
+| where ObjectName == "K8SNode"
+| where CounterName == "cpuUsageNanoCores"
+| summarize avg(CounterValue) by bin(TimeGenerated, 1h), Computer
+| render timechart

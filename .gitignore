@@ -1,0 +1,29 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfstate.lock.info
+.terraform.lock.hcl
+crash.log
+tfplan
+
+# Secrets / env
+*.pem
+*.key
+.env
+*.env.local
+
+# Kubernetes
+kubeconfig
+*.kubeconfig
+
+# Bicep/ARM build artifacts
+*.json.bak
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
